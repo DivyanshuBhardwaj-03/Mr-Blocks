@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
 
@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     public float speed;
     public GameObject gameWonPanel;
     public GameObject gamePausePanel;
-    private bool isGameWon = false;
+    public GameObject gameLostPanel;
+    private bool isGameOver = false;
     private bool isGamePaused = false;
     // Start is called before the first frame update
     void Start()
@@ -36,7 +37,7 @@ public class PlayerController : MonoBehaviour
             }
             
         }
-        if(isGameWon == true || isGamePaused == true)
+        if(isGameOver == true || isGamePaused == true)
         {
             return;
         }
@@ -79,8 +80,19 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Level Complete!!!");
             gameWonPanel.SetActive(true);
-            isGameWon = true;
+            isGameOver = true;
         }
-        
+        else if (collision.tag == "Enemy")
+        {
+            Debug.Log("Level Lost");
+            gameLostPanel.SetActive(true);
+            isGameOver = true;
+        }
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        Debug.Log("Restart Button Clicked");
     }
 }
